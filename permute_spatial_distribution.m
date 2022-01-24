@@ -14,11 +14,14 @@ clear all
 
 
 addpath(genpath('/Users/dianaperez/Box/Dependencies/cifti-matlab-master'));
-root_dir = '/Users/dianaperez/Desktop/lateralization_code/';
+%root_dir = '/Users/dianaperez/Desktop/lateralization_code/';
+root_dir = '/projects/p31161/lateralization_code/';
 addpath(genpath(root_dir))
-varmap_loc = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/'; %location of variant maps 
+varmap_loc = [root_dir '/Variant_Maps/new_split_vars/reassigned/'];
+%varmap_loc = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/'; %location of variant maps 
 varmap_str = '_uniqueIDs_afterReassign.dtseries.nii'; 
-template_loc = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/100206_border1ectopic2.dtseries.nii';
+%template_loc = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/100206_border1ectopic2.dtseries.nii';
+template_loc = [varmap_loc '100206_border1ectopic2.dtseries.nii'];
 output_dir = [root_dir '/testing_output/spatial_distribution/'];
 if ~exist(output_dir, 'file')
     mkdir(output_dir)
@@ -31,7 +34,7 @@ numperms = 1000;% number of permutations
 % sample that is being analyzed
 MSC = 0;
 HCP = 1;
-handedness = 1;
+handedness = 0;
 plot = 1;
 
 %initialize variables
@@ -65,7 +68,7 @@ if HCP
         subs = {LH; RH};
         group = {'LH', 'RH'};
     else
-        load([root_dir '/needed_files/goodSubs384.mat'])
+        load([root_dir '/PerezEtAl_HemAsymmetries/needed_files/goodSubs384.mat'])
         all_subs = goodSubs384;
         subs = {all_subs};
     end
@@ -81,10 +84,10 @@ template = ft_read_cifti_mod(template_loc);
 brainstructure = single(template.brainstructure);
 
 for g = 1:numel(subs)
-    out_str = append(in_str{g}, '_LhemvsRhem');
+    out_str = strcat(in_str{g}, '_LhemvsRhem');
     numSubs = length(subs{g});
-    left_cifti_loc = [root_dir append(in_str{g}, '_true_left_hems.mat')];
-    right_cifti_loc = [root_dir append(in_str{g}, '_true_right_hems.mat')];
+    left_cifti_loc = [root_dir strcat(in_str{g}, '_true_left_hems.mat')];
+    right_cifti_loc = [root_dir strcat(in_str{g}, '_true_right_hems.mat')];
     if exist(left_cifti_loc, 'file')
         load(left_cifti_loc)
         load(right_cifti_loc)
@@ -155,9 +158,7 @@ for g = 1:numel(subs)
 
         % randomize 1's and 0's
         ind = randperm(length(flip_switch))';
-        for n = 1:length(flip_switch)
-            rand_flip_switch(n,1) = flip_switch(ind(n));
-        end
+        rand_flip_switch = flip_switch(ind);
 
         [overlap_left, overlap_flip_left] = makemaps(true_left_hems, true_right_hems, rand_flip_switch, brainstructure);
 
