@@ -64,22 +64,26 @@ left_cifti_loc = [root_dir strcat(in_str, '_true_left_handers.mat')];
 right_cifti_loc = [root_dir strcat(in_str, '_true_right_handers.mat')];
 if exist(left_cifti_loc, 'file')
     load(left_cifti_loc)
-    load(right_cifti_loc)
+    
 else        
     for n = 1:length(LH)
 %         true_left_handers = [];
         cifti = ft_read_cifti_mod([varmap_loc num2str(LH(n,1)) varmap_str]);
         true_left_handers(:,n) = cifti.data;
     end
+    save(left_cifti_loc, 'true_left_handers')
+end
+if exist(right_cifti_loc, 'file')
+    load(right_cifti_loc)
     for n = 1:length(RH)
         cifti = ft_read_cifti_mod([varmap_loc num2str(RH(n,1)) varmap_str]);
         true_right_handers(:,n) = cifti.data;
     end
-    save(left_cifti_loc, 'true_left_handers')
+    
     save(right_cifti_loc, 'true_right_handers')
-   all_subs_cifti = [true_left_handers true_right_handers];
+   
 end
-
+all_subs_cifti = [true_left_handers true_right_handers];
 % matrix with 1's and 0's, will determine if sub's maps will be flipped
 % -- will be randomized later
 flip_switch = zeros(numSubs,1);
