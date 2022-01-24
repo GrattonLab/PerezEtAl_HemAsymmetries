@@ -7,6 +7,9 @@ clear all
 root_dir = '/Users/dianaperez/Desktop/lateralization_code/'; % location of code directory
 data_location = [root_dir 'testing_output/'];
 output_dir = [root_dir 'testing_output/'];
+if ~exists(output_dir)
+    mkdir(output_dir)
+end
 %% VARIABLES
 numperms = 100;% number of permutations
 % sample that is being analyzed
