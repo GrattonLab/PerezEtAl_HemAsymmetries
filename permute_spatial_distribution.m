@@ -138,13 +138,7 @@ for g = 1:numel(subs)
     true_spCorr = corr(true_overlap_left, true_overlap_flip_left);
     trueDiff = true_overlap_left - true_overlap_flip_left;
     save([output_dir out_str '_true_spatialCorr.mat'],'true_spCorr')               
-    save([output_dir out_str '_true_diffMap.mat'],'trueDiff')
-    % save overlap map for this group
-    %% PROBLEM - it's two left hems so missing some vertices -- might be worth just including the separate function for making overlap maps
-%     overlap = [true_overlap_left; true_overlap_flip_left];
-%     template.data = overlap;
-%     ft_write_cifti_mod([output_dir out_str '_overlap_map.dtseries.nii'], template);
-    
+    save([output_dir out_str '_true_diffMap.mat'],'trueDiff')    
 
     %--------------------------------------------------------------------------
     %% RUN PERMUTATIONS - MAKE RANDOMIZED MAPS
