@@ -203,20 +203,3 @@ end
 overlap_left = sum(left,2)/length(rand_flip_switch);        
 overlap_flip_left = sum(flip_left,2)/length(rand_flip_switch);
 end
-
-function [LH_files, RH_files, middle_files] = makingdatafiles(dataLoc, fileName, LH, middle, RH)
-%% function to make list of paths to files
-    LH_files = []; middle_files = []; RH_files = [];
-    for x = 1:length(LH)
-        file = [dataLoc num2str(LH(x)) fileName];
-        LH_files{x,1} = file;
-    end
-    for y = 1:length(middle)
-        file = [dataLoc num2str(middle(y)) fileName];
-        middle_files{y,1} = file;
-    end
-    for z = 1:length(RH)
-        file = [dataLoc num2str(RH(z)) fileName];
-        RH_files{z,1} = file;
-    end
-end
