@@ -75,6 +75,7 @@ else
 end
 if exist(right_cifti_loc, 'file')
     load(right_cifti_loc)
+else
     for n = 1:length(RH)
         cifti = ft_read_cifti_mod([varmap_loc num2str(RH(n,1)) varmap_str]);
         true_right_handers(:,n) = cifti.data;
