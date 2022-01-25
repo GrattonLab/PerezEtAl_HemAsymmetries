@@ -12,8 +12,8 @@ clear all
 %% PATHS
 %--------------------------------------------------------------------------
 
-root_dir = '/projects/p31161/lateralization_code/'; %location of scripts and needed files
-%root_dir = '/Users/dianaperez/Desktop/lateralization_code/'
+%root_dir = '/projects/p31161/lateralization_code/'; %location of scripts and needed files
+root_dir = '/Users/dianaperez/Desktop/lateralization_code/'
 addpath(genpath(root_dir))
 %addpath(genpath('/projects/b1081/Scripts')); %add cifti-matlab-master folder to path
 varmap_loc = [root_dir '/Variant_Maps/new_split_vars/reassigned/']; %location of variant maps
@@ -28,7 +28,7 @@ end
 %% VARIABLES
 %--------------------------------------------------------------------------
 numperms = 1000;% number of permutations
-plot = 1;
+plot_results = 1;
 
 %initialize variables
 spCorrs=zeros(numperms,1);% initialize mat of values i'm permuting
@@ -39,7 +39,7 @@ out_str = strcat(in_str, '_LHandvsRHand');
 group_str = {'HCP752_LH', 'HCP752_RH'};
 
 LH = []; MH = []; RH = []; % initialize mat of groups of subs; LH = left handers, RH = right handers, MH = 'middle' handers
-load([root_dir '/PerezEtAl_HemAsymmetries/needed_files/goodSubs752.mat'])
+load([root_dir '/needed_files/goodSubs752.mat'])
 all_subs = goodSubs752;
 for s = 1:length(all_subs)
     if all_subs(s,2) < -28
@@ -102,22 +102,24 @@ all_data = [true_left_handers true_right_handers];
 %--------------------------------------------------------------------------
 %% RUN PERMUTATIONS - MAKE RANDOMIZED MAPS
 %--------------------------------------------------------------------------
-flip_switch(1:length(numLH)) = 1; % add 1's
+%flip_switch(1:length(numLH)) = 1; % add 1's
         
 for p = 1:numperms % will go through this loop for each permutation    
     disp(['Permutation #' num2str(p)])
     rng('shuffle'); % need seed for randomizer
 
     % randomize 1's and 0's
-    ind = randperm(length(flip_switch))';
-    rand_data = all_data(:,ind);
+    ind = randperm(numSubs)';
+    %rand_data = all_data(:,ind);
+    rand_LH = all_data(:,ind(1:numLH));
+    rand_RH = all_data(:,ind(numLH+1:end));
     
-    [overlap_pseudo_left] = makemaps(rand_data(:,1:length(LH)));
-    [overlap_pseudo_right] = makemaps(rand_data(:,length(LH)+1:end));
+    [overlap_pseudo_left] = makemaps(rand_LH);
+    [overlap_pseudo_right] = makemaps(rand_RH);
 
     % get correlation
-    spCorrs(p) = corr(overlap_pseudo_left, overlap_psuedo_right);
-    perm_diff = overlap_psuedo_left - overlap_psuedo_right;
+    spCorrs(p) = corr(overlap_pseudo_left, overlap_pseudo_right);
+    perm_diff = overlap_pseudo_left - overlap_pseudo_right;
     diffmats(:,p)= perm_diff;
 end 
         
