@@ -39,7 +39,7 @@ out_str = strcat(in_str, '_LHandvsRHand');
 group_str = {'HCP752_LH', 'HCP752_RH'};
 
 LH = []; MH = []; RH = []; % initialize mat of groups of subs; LH = left handers, RH = right handers, MH = 'middle' handers
-load([root_dir '/needed_files/goodSubs752.mat'])
+load([root_dir '/PerezEtAl_HemAsymmetries/needed_files/goodSubs752.mat'])
 all_subs = goodSubs752;
 for s = 1:length(all_subs)
     if all_subs(s,2) < -28
@@ -110,10 +110,10 @@ for p = 1:numperms % will go through this loop for each permutation
 
     % randomize 1's and 0's
     ind = randperm(length(flip_switch))';
-    rand_sub_data = flip_switch(ind);
+    rand_data = all_data(:,ind);
     
-    [overlap_pseudo_left] = makemaps(all_data(rand_sub_data==1));
-    [overlap_pseudo_right] = makemaps(all_data(rand_sub_data==0));
+    [overlap_pseudo_left] = makemaps(rand_data(:,1:length(LH)));
+    [overlap_pseudo_right] = makemaps(rand_data(:,length(LH)+1:end));
 
     % get correlation
     spCorrs(p) = corr(overlap_pseudo_left, overlap_psuedo_right);
