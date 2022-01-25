@@ -13,9 +13,8 @@ clear all
 %--------------------------------------------------------------------------
 
 root_dir = '/projects/p31161/lateralization_code/'; %location of scripts and needed files
-%root_dir = '/Users/dianaperez/Desktop/lateralization_code/'
 addpath(genpath(root_dir))
-%addpath(genpath('/projects/b1081/Scripts')); %add cifti-matlab-master folder to path
+addpath(genpath('/projects/b1081/Scripts')); %add cifti-matlab-master folder to path
 varmap_loc = [root_dir '/Variant_Maps/new_split_vars/reassigned/']; %location of variant maps
 varmap_str = '_uniqueIDs_afterReassign.dtseries.nii'; 
 template_loc = [varmap_loc '100206_border1ectopic2.dtseries.nii'];
@@ -39,7 +38,7 @@ out_str = strcat(in_str, '_LHandvsRHand');
 group_str = {'HCP752_LH', 'HCP752_RH'};
 
 LH = []; MH = []; RH = []; % initialize mat of groups of subs; LH = left handers, RH = right handers, MH = 'middle' handers
-load([root_dir '/needed_files/goodSubs752.mat'])
+load([root_dir '/PerezEtAl_HemAsymmetries/needed_files/goodSubs752.mat'])
 all_subs = goodSubs752;
 for s = 1:length(all_subs)
     if all_subs(s,2) < -28
@@ -144,7 +143,23 @@ end
     
 
 function [overlap] = makemaps(data)
- overlap = sum(data,2)/length(data);
+ % initialize variables to include left hem and flipped left hem
+left = [];
+flip_left = [];
+brainstructure = brainstructure(1:32492);
+for x = 1:length(rand_flip_switch)
+    if rand_flip_switch(x) == 0
+        left(:,x) = left_hem(brainstructure==1,x);
+        flip_left(:,x) = right_hem(brainstructure==1,x);
+    elseif rand_flip_switch(x) == 1
+        left(:,x) = right_hem(brainstructure==1,x);
+        flip_left(:,x) = left_hem(brainstructure==1,x);
+    end
+end
+
+% divide by number of subs to obtain proportion
+overlap_left = sum(left,2)/length(rand_flip_switch);        
+overlap_flip_left = sum(flip_left,2)/length(rand_flip_switch);
 end
 
 
