@@ -1,12 +1,11 @@
 %% Count number/proportion of vertices and surface area for each network across hemispheres
-% input: group average cifti file
-% output: a matrix with 4 measures for each hemisphere (optional: a scatter
-% plot of the proportion of surface area for each network)
+input: group average cifti file
+output: a matrix with 4 measures for each hemisphere
 % 1. number of vertices
 % 2. proportion of vertices
 % 3. surface area accounted for by each network
 % 4. proportion of surface area
-%
+% optional: a scatter plot of the surfa
 clear all
 %-------------------------------------------------------------------------
 %% PATHS
