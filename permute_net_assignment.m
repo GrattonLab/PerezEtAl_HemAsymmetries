@@ -5,14 +5,14 @@ clear all
 root_dir = '/Users/dianaperez/Desktop/lateralization_code/'; % location of code directory
 data_location = [root_dir 'testing_output/'];
 output_dir = [root_dir 'testing_output/'];
-if ~exists(output_dir)
+if ~exist(output_dir)
     mkdir(output_dir)
 end
 %% VARIABLES
-numperms = 1000;% number of permutations
+numperms = 100;% number of permutations
 % sample that is being analyzed
-MSC = 0;
-HCP = 1;
+MSC = 1;
+HCP = 0;
 handedness = 0;
 plot = 1;
 
@@ -52,7 +52,7 @@ network_names = {'DMN','Vis','FP',' ','DAN',' ','VAN','Sal','CO','SMd','SMl','Au
 
 for net = 1:numel(network_names)
     if handedness       
-        [true_diff perm_diffs] = network_comparisons(LHand_net_info, RHand_net_info, flip_switch, numperms, 1, 0, net);
+        [true_diff perm_diffs] = network_comparisons(LHand_info, RHand_info, flip_switch, numperms, 1, 0, net);
         p = min([length(find(perm_diffs<true_diff))/numperms, length(find(perm_diffs>true_diff))/numperms]);
         disp(['Number of Variants assigned to ' network_names{net} ' (permute handedness) - ' num2str(p)])
     else
@@ -85,10 +85,10 @@ if plot
               .8 .8 .6]; %PON
     good_nets = [output_mat(:,1:3) output_mat(:,5) output_mat(:,7:end)];
     rgb_for_plot = {};
-    for n = 1:numer(network_names)
+    for n = 1:numel(network_names)
         rgb_for_plot{n} = rgb_colors(n,:);
     end
-    ind = zeros(1001,1);
+    ind = zeros(numperms+1,1);
     ind(1,1) = 1;
     net_inds = [ind ind ind ind ind ind ind ind ind ind ind ind ind ind];
     handles = plotSpread(good_nets, 'categoryMarkers', {'x', '.'}, 'categoryLabels', {'Permuted Differences','True Difference'}, 'distributionColors', rgb_for_plot', 'categoryIdx', net_inds, 'xNames', network_names)
@@ -98,7 +98,9 @@ if plot
     scatter(6,good_nets(1,6), 'MarkerEdgeColor', 'w', 'MarkerFaceColor', 'w', 'SizeData', 50)
     ylabel('Difference in Number of Variants')
     xlabel('Assigned Network')
-    axis([0, 15, -0.4, .7])
+    min_ax = min(min(good_nets(:,:)))-(min(std(good_nets)/2));
+    max_ax = max(max(good_nets(:,:)))+(min(std(good_nets)/2));
+    axis([0, 15, min_ax, max_ax])
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.9, 0.7]);
     print(gcf,[output_dir out_str '_PermutationTesting_networkAssignment.jpg'],'-dpng','-r300');
     close gcf

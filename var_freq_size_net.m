@@ -8,6 +8,9 @@ root_dir = '/Users/dianaperez/Desktop/'; % location of code directory
 data_location = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/';
 %data_location = '/Volumes/RESEARCH_HD/HCP_Variants/MSC_split/';
 output_dir = '/Users/dianaperez/Desktop/lateralization_code/testing_output/';
+if ~exist(output_dir)
+    mkdir(output_dir)
+end
 
 % file name for relevant files (variant map, network assignment and border/ectopic labels
 varmap_str = '_uniqueIDs_afterReassign.dtseries.nii';
@@ -21,8 +24,8 @@ surf_areas = ft_read_cifti_mod([root_dir 'lateralization_code/needed_files/surf_
 MSC = 0;
 HCP = 1;
 if HCP
-    wholeGroup = 0;
-    handedness = 0;
+    wholeGroup = 1;
+    handedness = 1;
 end
 
 plot = 1;
@@ -174,8 +177,7 @@ end
     %save structure to output file
     save(outfile, 'variants_info');
     save(outfile2, 'networksxHem');
-end
-
+    
 if plot
     % plot number of vars
     leftHem = variants_info.left_hem.group_avg{:,1};
@@ -190,7 +192,7 @@ if plot
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.3, 0.9]); %first and second control position on screen, third controls width, and fourth controls height
     m = findobj(gca, 'Type', 'Scatter');
     hleg1 = legend(m(1:2), 'Right Hemisphere', 'Left Hemisphere', 'Location', 'SouthOutside');
-    print(gcf, [output_dir cell2mat(out_str) '_numVars.jpg'], '-dpng', '-r300')
+    print(gcf, [output_dir cell2mat(out_str(g)) '_numVars.jpg'], '-dpng', '-r300')
     close gcf
     % plot number of var vertices
     leftHem = variants_info.left_hem.group_avg{:,2};
@@ -205,7 +207,7 @@ if plot
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.3, 0.9]); %first and second control position on screen, third controls width, and fourth controls height
     m = findobj(gca, 'Type', 'Scatter');
     hleg1 = legend(m(1:2), 'Right Hemisphere', 'Left Hemisphere', 'Location', 'SouthOutside');
-    print(gcf, [output_dir cell2mat(out_str) '_numVarVerts.jpg'], '-dpng', '-r300')
+    print(gcf, [output_dir cell2mat(out_str(g)) '_numVarVerts.jpg'], '-dpng', '-r300')
     close gcf
     % Average variant size in vertices
     leftHem = variants_info.left_hem.group_avg{:,3};
@@ -221,7 +223,7 @@ if plot
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.3, 0.9]); %first and second control position on screen, third controls width, and fourth controls height
     m = findobj(gca, 'Type', 'Scatter');
     hleg1 = legend(m(1:2), 'Right Hemisphere', 'Left Hemisphere', 'Location', 'SouthOutside');
-    print(gcf, [output_dir cell2mat(out_str) '_avgSizeVerts.jpg'], '-dpng', '-r300')
+    print(gcf, [output_dir cell2mat(out_str(g)) '_avgSizeVerts.jpg'], '-dpng', '-r300')
     close gcf
     % Average variant size in surface area
     leftHem = variants_info.left_hem.group_avg{:,4};
@@ -237,7 +239,7 @@ if plot
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.3, 0.9]); %first and second control position on screen, third controls width, and fourth controls height
     m = findobj(gca, 'Type', 'Scatter');
     hleg1 = legend(m(1:2), 'Right Hemisphere', 'Left Hemisphere', 'Location', 'SouthOutside');
-    print(gcf, [output_dir cell2mat(out_str) '_avgSizeSurfArea.jpg'], '-dpng', '-r300')
+    print(gcf, [output_dir cell2mat(out_str(g)) '_avgSizeSurfArea.jpg'], '-dpng', '-r300')
     close gcf
     % Network assignment
     network_names = {'DMN'	'Vis'	'FP'	'DAN'	'VAN'	'Sal'	'CO'	'SMd'	'SMl'	'Aud'	'Tpole'	'MTL'	'PMN'	'PON'};
@@ -250,12 +252,15 @@ if plot
     legend('Left Hem', 'Right Hem')
     xticks(1:14)
     xticklabels(network_names)
-    set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.5, 0.7, 0.5, 0.7]);
+    set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.5, 0.7, 0.9, 0.7]);
     ylabel('Average Number of Variants Assigned to Network');
     xlabel('Network');
     title('Variants Assigned to Each Network Across Hemispheres');
     ax = gca;
     ax.FontSize = 24;
-    print(gcf,[output_dir cell2mat(out_str) '_netAssignment.jpg'],'-dpng','-r300');
+    print(gcf,[output_dir cell2mat(out_str(g)) '_netAssignment.jpg'],'-dpng','-r300');
     close gcf
 end
+end
+
+
