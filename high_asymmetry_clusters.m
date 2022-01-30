@@ -36,8 +36,8 @@ if ~exist(net_assign_mat_loc, 'file') || ~exist(unique_IDs_mat_loc, 'file')
     save(net_assign_mat_loc, 'net_assign_mat')
     save(unique_IDs_mat_loc, 'varmap_mat')
 else
-%     load(net_assign_mat_loc);
-%     load(unique_IDs_mat_loc);
+    load(net_assign_mat_loc);
+    load(unique_IDs_mat_loc);
 end
     
 
@@ -67,8 +67,8 @@ clusterB_seed = find(clusterB_mask(1:29696)==1);
 clusterA_LH = []; clusterA_RH = []; clusterB_LH = []; clusterB_RH = [];
 
 % separate into left and right hemispheres
-%unique_IDs_mat = insert_nonbrain(varmap_mat, 'both', template);
-%net_assign_mat = insert_nonbrain(net_assign_mat, 'both', template);    
+unique_IDs_mat = insert_nonbrain(varmap_mat, 'both', template);
+net_assign_mat = insert_nonbrain(net_assign_mat, 'both', template);    
 unique_IDs_LH = unique_IDs_mat(1:32492,:);
 unique_IDs_RH = unique_IDs_mat(32493:end,:);
 net_assign_LH = net_assign_mat(1:32492, :);
