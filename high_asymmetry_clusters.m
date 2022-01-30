@@ -1,5 +1,5 @@
 %% Analyze networks represented in operculum cluster that shows big difference between left and right hemisphere
-clear all
+%clear all
 
 %--------------------------------------------------------------------------
 %% PATHS 
@@ -36,8 +36,8 @@ if ~exist(net_assign_mat_loc, 'file') || ~exist(unique_IDs_mat_loc, 'file')
     save(net_assign_mat_loc, 'net_assign_mat')
     save(unique_IDs_mat_loc, 'varmap_mat')
 else
-    load(net_assign_mat_loc);
-    load(unique_IDs_mat_loc);
+%     load(net_assign_mat_loc);
+%     load(unique_IDs_mat_loc);
 end
     
 
@@ -60,33 +60,34 @@ else
     clusterB_mask = ft_read_cifti_mod(maskB_loc);
     clusterB_mask = clusterB_mask.data;
 end
-clusterA_seed = find(clusterA_mask==1);
-clusterB_seed = find(clusterB_mask==1);
+clusterA_seed = find(clusterA_mask(1:29696)==1);
+clusterB_seed = find(clusterB_mask(1:29696)==1);
 
 % initialize variables
 clusterA_LH = []; clusterA_RH = []; clusterB_LH = []; clusterB_RH = [];
 
 % separate into left and right hemispheres
-unique_IDs_mat = insert_nonbrain(varmap_mat, 'both', template);
-net_assign_mat = insert_nonbrain(net_assign_mat, 'both', template);    
+%unique_IDs_mat = insert_nonbrain(varmap_mat, 'both', template);
+%net_assign_mat = insert_nonbrain(net_assign_mat, 'both', template);    
 unique_IDs_LH = unique_IDs_mat(1:32492,:);
 unique_IDs_RH = unique_IDs_mat(32493:end,:);
 net_assign_LH = net_assign_mat(1:32492, :);
 net_assign_RH = net_assign_mat(32493:end, :);
     
  
- for sub = 1:size(unique_IDs_LH,2)
+for sub = 1:size(unique_IDs_LH,2)
      %% LEFT HEM
-     [subInfo, clusterA.left_hem.proportion(s,:), clusterA.left_hem.number(s,:)] = extract_nets(unique_IDs_LH, net_assign_LH, clusterA_seed);    
+     [subInfo, clusterA.left_hem.proportion(sub,:), clusterA.left_hem.number(sub,:)] = extract_nets(unique_IDs_LH(:,sub), net_assign_LH(:,sub), clusterA_seed);    
      clusterA_LH = [clusterA_LH; subInfo];
-     [subInfo, clusterA.right_hem.proportion(s,:), clusterA.right_hem.number(s,:)] = extract_nets(unique_IDs_RH, net_assign_RH, clusterA_seed);    
+     [subInfo, clusterA.right_hem.proportion(sub,:), clusterA.right_hem.number(sub,:)] = extract_nets(unique_IDs_RH(:,sub), net_assign_RH(:,sub), clusterA_seed);    
      clusterA_RH = [clusterA_RH; subInfo];
-     [subInfo, clusterB.left_hem.proportion(s,:), clusterB.left_hem.number(s,:)] = extract_nets(unique_IDs_LH, net_assign_LH, clusterB_seed);    
+     [subInfo, clusterB.left_hem.proportion(sub,:), clusterB.left_hem.number(sub,:)] = extract_nets(unique_IDs_LH(:,sub), net_assign_LH(:,sub), clusterB_seed);    
      clusterB_LH = [clusterB_LH; subInfo];
-     [subInfo, clusterB.right_hem.proportion(s,:), clusterB.right_hem.number(s,:)] = extract_nets(unique_IDs_RH, net_assign_RH, clusterB_seed);    
+     [subInfo, clusterB.right_hem.proportion(sub,:), clusterB.right_hem.number(sub,:)] = extract_nets(unique_IDs_RH(:,sub), net_assign_RH(:,sub), clusterB_seed);    
      clusterB_RH = [clusterB_RH; subInfo];
- end
-clusterA.left_hem.vars = clusterA_LH;        
+end
+
+clusterA.left_hem.vars = clusterA_LH;
 clusterB.left_hem.vars = clusterB_LH;        
 clusterA.right_hem.vars = clusterA_RH;              
 clusterB.right_hem.vars = clusterB_RH;
@@ -114,23 +115,28 @@ if plot
       0 0 1; %PMN
       .8 .8 .6]; %PON
     network_names = {'DMN','Vis','FP',' ','DAN',' ','VAN','Sal','CO','SMd','SMl','Aud','Tpole','MTL','PMN','PON'};
-    scatter((.75:1:15.75), sum(clusterA_LH_nets.number,1), 80, rgb, 'filled')
+    scatter((.75:1:15.75), sum(clusterA.left_hem.number,1), 80, rgb, 'd', 'filled')
     hold on
-    scatter((1.25:1:16.25), sum(clusterA_RH_nets.number,1), 80, rgb, 'filled')
+    scatter((1.25:1:16.25), sum(clusterA.right_hem.number,1), 80, rgb, 'filled')
     xticks([1:16])
     xticklabels(network_names)
-    axis([0.5, 16.5, 0, 250])
+    max_ax = max(max(sum(clusterA.left_hem.number,1)))+(min((std(sum(clusterA.left_hem.number))/2)));
+    min_ax = min(min(sum(clusterA.left_hem.number,1)))-(min((std(sum(clusterA.left_hem.number))/2)));
+    axis([0.5, 16.5, min_ax, max_ax])
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.7, 0.5]); %first and second control position on screen, third controls width, and fourth controls height
     print(gcf, '/Users/dianaperez/Desktop/HCP384_high_asymm_clusterA_nets.jpg', '-dpng', '-r300')
     close gcf
-    scatter((.75:1:15.75), sum(clusterB_LH_nets.number,1), 80, rgb, 'filled')
+    scatter((.75:1:15.75), sum(clusterB.left_hem.number,1), 80, rgb, 'd', 'filled')
     hold on
-    scatter((1.25:1:16.25), sum(clusterB_RH_nets.number,1), 80, rgb, 'filled')
+    scatter((1.25:1:16.25), sum(clusterB.right_hem.number,1), 80, rgb, 'filled')
     xticks([1:16])
     xticklabels(network_names)
-    axis([0.5, 16.5, 0, 250])
+    max_ax = max(max(sum(clusterB.left_hem.number,1)))+(min((std(sum(clusterB.left_hem.number))/2)));
+    min_ax = min(min(sum(clusterB.left_hem.number,1)))-(min((std(sum(clusterB.left_hem.number))/2)));
+    axis([0.5, 16.5, min_ax, max_ax])
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.7, 0.5]); %first and second control position on screen, third controls width, and fourth controls height
     print(gcf, '/Users/dianaperez/Desktop/HCP384_high_asymm_clusterB_nets.jpg', '-dpng', '-r300')
+    close gcf
 end
 
 %%%
@@ -169,8 +175,8 @@ function [mask] = make_mask(seed_verts, neigh, diffmap_bin, numVerts, template, 
     ft_write_cifti_mod(outfile, template)
 end
 
-function [sub_data, proportion, number] = extract_nets(unique_IDs_hem, net_assign, cluster_verts)
-    unique_IDs = unique(unique_IDs_LH(clusterA_seed,sub));
+function [sub_data, proportion, numvars] = extract_nets(unique_IDs_hem, net_assign, cluster_verts)
+    unique_IDs = unique(unique_IDs_hem(cluster_verts));
     if unique_IDs(1) == 0
         unique_IDs(1) = [];
     end
