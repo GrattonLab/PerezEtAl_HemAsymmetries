@@ -5,8 +5,8 @@ clear all
 %--------------------------------------------------------------------------
 %% PATHS 
 root_dir = '/Users/dianaperez/Desktop/'; % location of code directory
-data_location = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/';
-%data_location = '/Volumes/RESEARCH_HD/HCP_Variants/MSC_split/';
+%data_location = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/';
+data_location = '/Volumes/RESEARCH_HD/HCP_Variants/MSC_split/';
 output_dir = '/Users/dianaperez/Desktop/lateralization_code/testing_output/';
 if ~exist(output_dir)
     mkdir(output_dir)
@@ -21,11 +21,11 @@ surf_areas = ft_read_cifti_mod([root_dir 'lateralization_code/needed_files/surf_
 
 %% VARIABLES
 % sample that is being analyzed
-MSC = 0;
-HCP = 1;
+MSC = 1;
+HCP = 0;
 if HCP
-    wholeGroup = 1;
-    handedness = 1;
+    wholeGroup = 0;
+    handedness = 0;
 end
 
 plot = 1;
@@ -115,7 +115,7 @@ for g = 1:numel(subs)
             for v = 1:length(Lhem_var_IDs)
                 verts = find(Lhem(:,1)==Lhem_var_IDs(v)); % get vertices for each variant
                 num_verts = length(verts); % variant size (number of vertices)
-                surf_area = sum(surf_areas_LHem(verts))/sum(surf_areas_LHem); %variant size (surface area)
+                surf_area = sum(surf_areas_LHem(verts)); %variant size (surface area)
                 net = Lhem(verts(1),2); %network assignment
                 sub_info(v,:) = [Lhem_var_IDs(v) num_verts surf_area net]; %save to matrix
             end
@@ -145,7 +145,7 @@ for g = 1:numel(subs)
             for v = 1:length(Rhem_var_IDs)
                 verts = find(Rhem(:,1)==Rhem_var_IDs(v));
                 num_verts = length(verts);
-                surf_area = sum(surf_areas_RHem(verts))/sum(surf_areas_RHem);
+                surf_area = sum(surf_areas_RHem(verts));
                 net = Rhem(verts(1),2);
                 sub_info(v,:) = [Rhem_var_IDs(v) num_verts surf_area net];
             end

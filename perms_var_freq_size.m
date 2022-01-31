@@ -11,11 +11,11 @@ if ~exist(output_dir)
     mkdir(output_dir)
 end
 %% VARIABLES
-numperms = 1000;% number of permutations
+numperms = 100;% number of permutations
 % sample that is being analyzed
-MSC = 0;
-HCP = 1;
-handedness = 1;
+MSC = 1;
+HCP = 0;
+handedness = 0;
 plot = 1;
 
 %initialize variables
@@ -214,7 +214,9 @@ handles = plotSpread(perm_diffs, 'categoryMarkers', {'o', '.'}, 'categoryLabels'
 scatter(1,perm_diffs(1,:), 'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'red', 'SizeData', 50)
 ax = gca;
 ax.FontSize = 12;
-axis([0.5, 1.5, min(perm_diffs)-5, max(perm_diffs)+5])
+min_ax = min(perm_diffs)-(std(perm_diffs)/2);
+max_ax = max(perm_diffs)+(std(perm_diffs)/2);
+axis([0.5, 1.5, min_ax, max_ax])
 title(title_str)
 ylabel(y_label)
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.3, 0.7]); %first and second control position on screen, third controls width, and fourth controls height
