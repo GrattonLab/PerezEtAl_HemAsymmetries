@@ -87,11 +87,14 @@ close gcf
 
 %% corelation between individualized network surface area and number of variants
 load('/Users/dianaperez/Desktop/lateralization_code/testing_output/HCP384_new_split_networksxHem.mat')
-        
+diff_numvars_all =[];
+diff_sizenets_all = [];   
 for net = 1:16
     %diff_numvars = networksxHem.clustersLH(:,net) - networksxHem.clustersRH(:,net);
     diff_numvars = networksxHem.verticesLH(:,net) - networksxHem.verticesRH(:,net);
     diff_size_nets = indiv_nets_size.left_hem.surf_area(:,net) - indiv_nets_size.right_hem.surf_area(:,net);
+    diff_numvars_all = [diff_numvars_all; diff_numvars];
+    diff_sizenets_all = [diff_sizenets_all; diff_size_nets];
     [r p] = corr(diff_numvars, diff_size_nets);
     rvals(net) = r;
     pvals(net) = p;

@@ -101,9 +101,9 @@ if plot
     rgb = [1 0 0; %DMN   
     0 0 .6; %Vis
     1 1 0; %FP
-    .67 .67 .67; %Unassigned
+    %.67 .67 .67; %Unassigned
     0 .8 0; %DAN
-      .67 .67 .67; %Unassigned2
+      %.67 .67 .67; %Unassigned2
       0 .6 .6;%VAN
       0 0 0; % Sal
       .3 0 .6; %CON
@@ -114,26 +114,34 @@ if plot
       0 .2 .4; %MTL
       0 0 1; %PMN
       .8 .8 .6]; %PON
-    network_names = {'DMN','Vis','FP',' ','DAN',' ','VAN','Sal','CO','SMd','SMl','Aud','Tpole','MTL','PMN','PON'};
-    scatter((.75:1:15.75), sum(clusterA.left_hem.number,1), 80, rgb, 'd', 'filled')
+    network_names = {'DMN','Vis','FP','DAN','VAN','Sal','CO','SMd','SMl','Aud','Tpole','MTL','PMN','PON'};
+    good_nets_LH = [clusterA.left_hem.number(:,1:3) clusterA.left_hem.number(:,5) clusterA.left_hem.number(:,7:end)];
+    good_nets_RH = [clusterA.right_hem.number(:,1:3) clusterA.right_hem.number(:,5) clusterA.right_hem.number(:,7:end)];
+    scatter((.75:1:13.75), sum(good_nets_LH,1), 150, rgb, 'd', 'filled')
     hold on
-    scatter((1.25:1:16.25), sum(clusterA.right_hem.number,1), 80, rgb, 'filled')
-    xticks([1:16])
+    scatter((1.25:1:14.25), sum(good_nets_RH,1), 150, rgb, 'filled')
+    xticks([1:14])
     xticklabels(network_names)
-    max_ax = max(max(sum(clusterA.left_hem.number,1)))+(min((std(sum(clusterA.left_hem.number))/2)));
-    min_ax = min(min(sum(clusterA.left_hem.number,1)))-(min((std(sum(clusterA.left_hem.number))/2)));
-    axis([0.5, 16.5, min_ax, max_ax])
+    max_ax = max(max(sum(good_nets_LH,1)))+(min((std(sum(good_nets_LH))/2)));
+    min_ax = min(min(sum(good_nets_LH,1)))-(min((std(sum(good_nets_LH))/2)));
+    axis([0.5, 14.5, min_ax, max_ax])
+    ax = gca;
+    ax.FontSize = 24;
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.7, 0.5]); %first and second control position on screen, third controls width, and fourth controls height
     print(gcf, '/Users/dianaperez/Desktop/HCP384_high_asymm_clusterA_nets.jpg', '-dpng', '-r300')
     close gcf
-    scatter((.75:1:15.75), sum(clusterB.left_hem.number,1), 80, rgb, 'd', 'filled')
+    good_nets_LH = [clusterB.left_hem.number(:,1:3) clusterB.left_hem.number(:,5) clusterB.left_hem.number(:,7:end)];
+    good_nets_RH = [clusterB.right_hem.number(:,1:3) clusterB.right_hem.number(:,5) clusterB.right_hem.number(:,7:end)];
+    scatter((.75:1:13.75), sum(good_nets_LH,1), 150, rgb, 'd', 'filled')
     hold on
-    scatter((1.25:1:16.25), sum(clusterB.right_hem.number,1), 80, rgb, 'filled')
-    xticks([1:16])
+    scatter((1.25:1:14.25), sum(good_nets_RH,1), 150, rgb, 'filled')
+    xticks([1:14])
     xticklabels(network_names)
-    max_ax = max(max(sum(clusterB.left_hem.number,1)))+(min((std(sum(clusterB.left_hem.number))/2)));
-    min_ax = min(min(sum(clusterB.left_hem.number,1)))-(min((std(sum(clusterB.left_hem.number))/2)));
-    axis([0.5, 16.5, min_ax, max_ax])
+    max_ax = max(max(sum(good_nets_RH,1)))+(min((std(sum(good_nets_RH))/2)));
+    min_ax = min(min(sum(good_nets_RH,1)))-(min((std(sum(good_nets_RH))/2)));
+    axis([0.5, 14.5, min_ax, max_ax])
+    ax = gca;
+    ax.FontSize = 24;
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.3, 0.3, 0.7, 0.5]); %first and second control position on screen, third controls width, and fourth controls height
     print(gcf, '/Users/dianaperez/Desktop/HCP384_high_asymm_clusterB_nets.jpg', '-dpng', '-r300')
     close gcf

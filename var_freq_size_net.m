@@ -5,8 +5,8 @@ clear all
 %--------------------------------------------------------------------------
 %% PATHS 
 root_dir = '/Users/dianaperez/Desktop/'; % location of code directory
-%data_location = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/';
-data_location = '/Volumes/RESEARCH_HD/HCP_Variants/MSC_split/';
+data_location = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/';
+%data_location = '/Volumes/RESEARCH_HD/HCP_Variants/MSC_split/';
 output_dir = '/Users/dianaperez/Desktop/lateralization_code/testing_output/';
 if ~exist(output_dir)
     mkdir(output_dir)
@@ -21,11 +21,11 @@ surf_areas = ft_read_cifti_mod([root_dir 'lateralization_code/needed_files/surf_
 
 %% VARIABLES
 % sample that is being analyzed
-MSC = 1;
-HCP = 0;
+MSC = 0;
+HCP = 1;
 if HCP
-    wholeGroup = 0;
-    handedness = 0;
+    wholeGroup = 1;
+    handedness = 1;
 end
 
 plot = 1;
@@ -253,7 +253,7 @@ if plot
     xticks(1:14)
     xticklabels(network_names)
     set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.5, 0.7, 0.9, 0.7]);
-    ylabel('Average Number of Variants Assigned to Network');
+    ylabel('Average Number of Variants');
     xlabel('Network');
     title('Variants Assigned to Each Network Across Hemispheres');
     ax = gca;
