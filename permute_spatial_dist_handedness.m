@@ -42,9 +42,9 @@ LH = []; MH = []; RH = []; % initialize mat of groups of subs; LH = left handers
 load([root_dir '/needed_files/goodSubs752.mat'])
 all_subs = goodSubs752;
 for s = 1:length(all_subs)
-    if all_subs(s,2) < -28
+    if all_subs(s,2) < -40
         LH = [LH; all_subs(s,:)];
-    elseif all_subs(s,2) < 48
+    elseif all_subs(s,2) < 40
         MH = [MH; all_subs(s,:)];
     elseif all_subs(s,2) <= 100
         RH = [RH; all_subs(s,:)];
