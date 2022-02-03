@@ -2,7 +2,8 @@
 clear all
 %--------------------------------------------------------------------------
 %% PATHS 
-root_dir = '/Users/dianaperez/Desktop/lateralization_code/'; % location of code directory
+%root_dir = '/Users/dianaperez/Desktop/lateralization_code/'; % location of code directory
+root_dir = '/projects/p31161/lateralization_code/';
 data_location = [root_dir 'testing_output/'];
 output_dir = [root_dir 'testing_output/'];
 if ~exist(output_dir)
@@ -12,8 +13,9 @@ end
 numperms = 1000;% number of permutations
 % sample that is being analyzed
 MSC = 0;
-HCP = 1;
-handedness = 1;
+HCP = 0;
+INET = 1;
+handedness = 0;
 plot = 1;
 
 %initialize variables
@@ -22,6 +24,9 @@ perm_diffs=zeros(numperms,1);% initialize mat of values i'm permuting
 
 if MSC
     in_str = 'MSC';
+    out_str = append(in_str, '_LhemvsRhem_');
+elseif INET
+    in_str = 'INET';
     out_str = append(in_str, '_LhemvsRhem_');
 else
     if handedness

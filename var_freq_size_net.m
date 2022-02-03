@@ -4,10 +4,13 @@ clear all
 
 %--------------------------------------------------------------------------
 %% PATHS 
-root_dir = '/Users/dianaperez/Desktop/'; % location of code directory
-data_location = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/';
+%root_dir = '/Users/dianaperez/Desktop/'; % location of code directory
+root_dir = '/projects/p31161/lateralization_code/';
+%data_location = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/';
 %data_location = '/Volumes/RESEARCH_HD/HCP_Variants/MSC_split/';
-output_dir = '/Users/dianaperez/Desktop/lateralization_code/testing_output/';
+data_location = '/projects/b1081/iNetworks/Nifti/derivatives/postFCproc_CIFTI_20.2.0/Variants/spCorr/binarized/uniqueIDs/split/reassigned/';
+%output_dir = '/Users/dianaperez/Desktop/lateralization_code/testing_output/';
+output_dir = '/projects/p31161/lateralization_code/testing_output/';
 if ~exist(output_dir)
     mkdir(output_dir)
 end
@@ -17,12 +20,13 @@ varmap_str = '_uniqueIDs_afterReassign.dtseries.nii';
 netAssign_str = '_reassigned.dtseries.nii';
 
 %load file with surface area measurement for each vertex
-surf_areas = ft_read_cifti_mod([root_dir 'lateralization_code/needed_files/surf_areas_verts.dtseries.nii']);
+surf_areas = ft_read_cifti_mod([root_dir '/PerezEtAl_HemAsymmetries/needed_files/surf_areas_verts.dtseries.nii']);
 
 %% VARIABLES
 % sample that is being analyzed
 MSC = 0;
-HCP = 1;
+HCP = 0;
+INET = 1;
 if HCP
     wholeGroup = 1;
     handedness = 1;
@@ -70,6 +74,12 @@ if HCP
 elseif MSC == 1
     out_str = {'MSC'};
     all_subs = {'MSC01', 'MSC02', 'MSC03', 'MSC04', 'MSC05', 'MSC06', 'MSC07', 'MSC09', 'MSC10'}';
+    subs = {all_subs};
+elseif INET == 1
+    out_str = {'INET'};
+    all_subs = {'INET001', 'INET002', 'INET003', 'INET005', 'INET006', 'INET010',...
+        'INET016', 'INET018', 'INET019', 'INET026', 'INET030', 'INET034',...
+        'INET035', 'INET036', 'INET039', 'INET040', 'INET041', 'INET042'};
     subs = {all_subs};
 end
 
