@@ -2,8 +2,8 @@
 clear all
 %--------------------------------------------------------------------------
 %% PATHS 
-%root_dir = '/Users/dianaperez/Desktop/lateralization_code/'; % location of code directory
-root_dir = '/projects/p31161/lateralization_code/';
+root_dir = '/Users/dianaperez/Desktop/lateralization_code/'; % location of code directory
+%root_dir = '/projects/p31161/lateralization_code/';
 data_location = [root_dir 'testing_output/'];
 output_dir = [root_dir 'testing_output/'];
 if ~exist(output_dir)

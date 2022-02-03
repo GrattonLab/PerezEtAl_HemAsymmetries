@@ -73,13 +73,13 @@ end
 data = {LHand_net_assign, Rhand_net_assign};
 template = ft_read_cifti_mod(template_loc);
 
-numsubs = length(LHand_net_assign);
+numsubs = size(LHand_net_assign,2);
 LH_bin_data = logical(LHand_net_assign==network_id);
 LH_overlap_map = sum(LH_bin_data,2)/numsubs;
 template.data = LH_overlap_map;
 ft_write_cifti_mod([output_dir group_str{1} '_' network_names{network_id} '_Variants_Overlap.dtseries.nii'], template);
 
-numsubs = length(Rhand_net_assign);
+numsubs = size(Rhand_net_assign,2);
 RH_bin_data = logical(Rhand_net_assign==network_id);
 RH_overlap_map = sum(RH_bin_data,2)/numsubs;
 template.data = RH_overlap_map;

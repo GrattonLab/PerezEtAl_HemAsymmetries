@@ -13,10 +13,11 @@ end
 %% VARIABLES
 numperms = 100;% number of permutations
 % sample that is being analyzed
-MSC = 1;
+MSC = 0;
+INET = 1;
 HCP = 0;
 handedness = 0;
-plot = 1;
+plot = 0;
 
 %initialize variables
 p_vals = [];
@@ -25,7 +26,10 @@ perm_diffs=zeros(numperms,1);% initialize mat of values i'm permuting
 if MSC
     in_str = 'MSC';
     out_str = append(in_str, '_LhemvsRhem_');
-else
+elseif INET
+    in_str = 'INET';
+    out_str = append(in_str, '_LhemvsRhem_');
+else    
     if handedness
         in_str = 'HCP752';
         out_str = append(in_str, '_LHandvsRHand_');
@@ -168,7 +172,7 @@ else
 
 end
 %final_pvals = p_vals(find(p_vals(:,3)>0),3);
-[p_fdr p_masked] = FDR(p_vals, .025);
+[p_fdr p_masked] = FDR(p_vals, .025)
 
 
 function [true_diff perm_diffs] = permute_values(left, right, flip_switch, numperms, hand, hemi, index)
