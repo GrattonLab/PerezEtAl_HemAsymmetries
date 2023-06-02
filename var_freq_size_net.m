@@ -5,12 +5,12 @@ clear all
 %--------------------------------------------------------------------------
 %% PATHS 
 %root_dir = '/Users/dianaperez/Desktop/'; % location of code directory
-root_dir = '/projects/p31161/lateralization_code/';
-%data_location = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/';
+root_dir = '/Users/dianaperez/Documents/GitHub/';
+data_location = '/Volumes/RESEARCH_HD/HCP_Variants/new_split_vars/reassigned/';
 %data_location = '/Volumes/RESEARCH_HD/HCP_Variants/MSC_split/';
-data_location = '/projects/b1081/iNetworks/Nifti/derivatives/postFCproc_CIFTI_20.2.0/Variants/spCorr/binarized/uniqueIDs/split/reassigned/';
-%output_dir = '/Users/dianaperez/Desktop/lateralization_code/testing_output/';
-output_dir = '/projects/p31161/lateralization_code/testing_output/';
+%tion = '/projects/b1081/iNetworks/Nifti/derivatives/postFCproc_CIFTI_20.2.0/Variants/spCorr/binarized/uniqueIDs/split/reassigned/';
+output_dir = '/Users/dianaperez/Desktop/lateralization_code/testing_output/';
+%output_dir = '/projects/p31161/lateralization_code/testing_output/';
 if ~exist(output_dir)
     mkdir(output_dir)
 end
@@ -25,14 +25,14 @@ surf_areas = ft_read_cifti_mod([root_dir '/PerezEtAl_HemAsymmetries/needed_files
 %% VARIABLES
 % sample that is being analyzed
 MSC = 0;
-HCP = 0;
-INET = 1;
+HCP = 1;
+INET = 0;
 if HCP
-    wholeGroup = 1;
-    handedness = 1;
+    wholeGroup = 0;
+    handedness = 0;
 end
 
-plot = 1;
+plot = 0;
 % surface areas for each hem
 surf_areas_LHem = surf_areas.data(1:29696);
 surf_areas_RHem = surf_areas.data(29697:end);
